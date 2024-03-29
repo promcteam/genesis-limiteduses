@@ -1,4 +1,4 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package com.promcteam.genesis.addon.limiteduses;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,11 +17,10 @@ import org.bukkit.entity.Player;
 
 public class LimitedUsesManager {
 
-    private LimitedUses plugin;
-    private BSAddonStorage storage;
-    private HashMap<UUID, List<String>> uses = new HashMap<UUID, List<String>>(); //includes cooldowns
-    private HashMap<UUID, List<String>> cooldowns = new HashMap<UUID, List<String>>();
-
+    private final LimitedUses plugin;
+    private final BSAddonStorage storage;
+    private final HashMap<UUID, List<String>> uses = new HashMap<>(); //includes cooldowns
+    private final HashMap<UUID, List<String>> cooldowns = new HashMap<>();
 
     public LimitedUsesManager(LimitedUses plugin) {
         this.plugin = plugin;
@@ -31,7 +30,7 @@ public class LimitedUsesManager {
             for (String key : storage.listKeys("players", true)) { //Convert storage
                 List<String> uses_list = storage.getStringList("players." + key);
                 if (uses_list != null) {
-                    List<String> new_uses_list = new ArrayList<String>();
+                    List<String> new_uses_list = new ArrayList<>();
                     for (String entry : uses_list) {
                         new_uses_list.add(entry.replace("-", ":"));
                     }
@@ -214,7 +213,7 @@ public class LimitedUsesManager {
 
     public void progressValue(OfflinePlayer p, BSShop shop, BSBuy buy, HashMap<UUID, List<String>> map, long value) {
         if (!map.containsKey(p.getUniqueId())) {
-            map.put(p.getUniqueId(), new ArrayList<String>());
+            map.put(p.getUniqueId(), new ArrayList<>());
         }
 
         String tag = createTag(shop, buy);

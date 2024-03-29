@@ -1,15 +1,15 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package com.promcteam.genesis.addon.limiteduses;
 
 import org.black_ixx.bossshop.core.BSBuy;
 import org.black_ixx.bossshop.core.BSShopHolder;
 import org.black_ixx.bossshop.core.conditions.BSConditionTypeNumber;
 import org.bukkit.entity.Player;
 
-public class BSConditionTypeUses extends BSConditionTypeNumber {
+public class GenesisConditionTypeUses extends BSConditionTypeNumber {
 
-    private LimitedUsesManager manager;
+    private final LimitedUsesManager manager;
 
-    public BSConditionTypeUses(LimitedUsesManager manager) {
+    public GenesisConditionTypeUses(LimitedUsesManager manager) {
         this.manager = manager;
     }
 

@@ -1,4 +1,4 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package com.promcteam.genesis.addon.limiteduses;
 
 
 import org.black_ixx.bossshop.core.BSBuy;
@@ -14,8 +14,7 @@ import org.bukkit.entity.Player;
 
 public class CommandManager implements CommandExecutor {
 
-    private LimitedUses plugin;
-
+    private final LimitedUses plugin;
 
     public CommandManager(LimitedUses plugin) {
         this.plugin = plugin;
@@ -114,7 +113,6 @@ public class CommandManager implements CommandExecutor {
                     }
 
                 }
-
                 sender.sendMessage(ChatColor.GOLD + "[LimitedUses]");
                 sender.sendMessage(ChatColor.GRAY + "- lius set <player> <shop> <shopitem> <count> - Set uses");
                 sender.sendMessage(ChatColor.GRAY + "- lius add <player> <shop> <shopitem> <count> - Add uses");
@@ -122,15 +120,12 @@ public class CommandManager implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "- lius reset <player> <shop> <shopitem> - Reset cooldown and uses");
                 sender.sendMessage(ChatColor.RED + "- lius reset <player> - Reset cooldown and uses of all items");
                 sender.sendMessage(ChatColor.RED + "- lius resetall - Reset all data of all players");
-
                 return false;
             } else {
                 ClassManager.manager.getMessageHandler().sendMessage("Main.NoPermission", sender);
                 return false;
             }
         }
-
-
         return false;
     }
 

@@ -1,21 +1,21 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package com.promcteam.genesis.addon.limiteduses;
 
 import org.black_ixx.bossshop.core.BSBuy;
 import org.black_ixx.bossshop.core.BSShopHolder;
 import org.black_ixx.bossshop.core.conditions.BSConditionTypeNumber;
 import org.bukkit.entity.Player;
 
-public class BSConditionTypeCooldown extends BSConditionTypeNumber {
+public class GenesisConditionTypeCooldown extends BSConditionTypeNumber {
 
-    private LimitedUsesManager manager;
+    private final LimitedUsesManager manager;
 
-    public BSConditionTypeCooldown(LimitedUsesManager manager) {
+    public GenesisConditionTypeCooldown(LimitedUsesManager manager) {
         this.manager = manager;
     }
 
     @Override
     public double getNumber(BSBuy shopitem, BSShopHolder holder, Player p) {
-        return manager.detectLastUseDelay(p, shopitem.getShop(), shopitem) / 1000;
+        return manager.detectLastUseDelay(p, shopitem.getShop(), shopitem) / 1000D;
     }
 
     @Override

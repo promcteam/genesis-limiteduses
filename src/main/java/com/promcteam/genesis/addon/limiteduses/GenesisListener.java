@@ -1,4 +1,4 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package com.promcteam.genesis.addon.limiteduses;
 
 
 import org.black_ixx.bossshop.core.BSBuy;
@@ -21,16 +21,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class BSListener implements Listener {
+public class GenesisListener implements Listener {
 
-    private LimitedUses plugin;
-    private LimitedUsesManager manager;
+    private final LimitedUses plugin;
+    private final LimitedUsesManager manager;
 
-    public BSListener(LimitedUses plugin, LimitedUsesManager manager) {
+    public GenesisListener(LimitedUses plugin, LimitedUsesManager manager) {
         this.plugin = plugin;
         this.manager = manager;
     }
-
 
     public void enable() {
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -49,8 +48,8 @@ public class BSListener implements Listener {
 
     @EventHandler
     public void onRegisterTypes(BSRegisterTypesEvent e) {
-        new BSConditionTypeUses(manager).register();
-        new BSConditionTypeCooldown(manager).register();
+        new GenesisConditionTypeUses(manager).register();
+        new GenesisConditionTypeCooldown(manager).register();
     }
 
     @EventHandler
@@ -97,7 +96,7 @@ public class BSListener implements Listener {
                     BSSingleCondition c = getCondition(buy.getCondition(), "cooldown");
                     if (c != null) {
                         if (c.getConditionType().equalsIgnoreCase(">") || c.getConditionType().equalsIgnoreCase("over")) {
-                            time_to_wait = InputReader.getInt(c.getCondition(), 0) * 1000;
+                            time_to_wait = InputReader.getInt(c.getCondition(), 0) * 1000L;
                         }
                     }
                     long time_left = time_to_wait - time;

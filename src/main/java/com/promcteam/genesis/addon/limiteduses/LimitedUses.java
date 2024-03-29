@@ -1,4 +1,4 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package com.promcteam.genesis.addon.limiteduses;
 
 
 import org.black_ixx.bossshop.api.BossShopAddon;
@@ -6,10 +6,8 @@ import org.bukkit.command.CommandSender;
 
 public class LimitedUses extends BossShopAddon {
 
-
-    private BSListener listener;
+    private GenesisListener listener;
     private LimitedUsesManager manager;
-
 
     @Override
     public String getAddonName() {
@@ -25,7 +23,7 @@ public class LimitedUses extends BossShopAddon {
     public void enableAddon() {
         getCommand("limiteduses").setExecutor(new CommandManager(this));
         manager = new LimitedUsesManager(this);
-        listener = new BSListener(this, manager);
+        listener = new GenesisListener(this, manager);
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
