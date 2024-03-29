@@ -4,7 +4,7 @@ description: Genesis Addon - Allows to limit the amount of uses of items.
 author: Black_ixx,ProMCTeam
 website: http://felix.neuby.de
 main: com.promcteam.genesis.addon.limiteduses.LimitedUses
-depend: [Genesis]
+depend: [BossShopPro]
 commands:
   limiteduses:
    description: Allows editing the shopitem consume count of players
