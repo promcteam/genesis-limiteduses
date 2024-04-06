@@ -1,4 +1,4 @@
-package com.promcteam.genesis.addon.limiteduses;
+package studio.magemonkey.genesis.addon.limiteduses;
 
 import java.util.ArrayList;
 import java.util.Date;

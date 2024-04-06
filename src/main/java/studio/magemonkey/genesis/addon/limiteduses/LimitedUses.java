@@ -1,4 +1,4 @@
-package com.promcteam.genesis.addon.limiteduses;
+package studio.magemonkey.genesis.addon.limiteduses;
 
 
 import org.black_ixx.bossshop.api.BossShopAddon;

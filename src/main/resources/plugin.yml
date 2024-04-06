@@ -1,10 +1,10 @@
 name: LimitedUses
 version: ${project.version}
 description: Genesis Addon - Allows to limit the amount of uses of items.
-author: Black_ixx,ProMCTeam
+author: Black_ixx,MageMonkeyStudios
 website: http://felix.neuby.de
-main: com.promcteam.genesis.addon.limiteduses.LimitedUses
-depend: [BossShopPro]
+main: studio.magemonkey.genesis.addon.limiteduses.LimitedUses
+depend: [Genesis]
 commands:
   limiteduses:
    description: Allows editing the shopitem consume count of players
