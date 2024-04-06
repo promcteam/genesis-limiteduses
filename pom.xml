@@ -1,56 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>Genesis-LimitedUses</groupId>
-  <artifactId>Genesis-LimitedUses</artifactId>
-  <version>1.1.0</version>
-  <name>LimitedUses</name>
-  <description>Allows to limit the amount of uses of shop items.</description>
-	<build>
-		<finalName>Genesis-LimitedUses</finalName>
-		<resources>
-			<resource>
-				<targetPath>.</targetPath>
-				<filtering>true</filtering>
-				<directory>${basedir}/src/main/resources/</directory>
-				<includes>
-					<include>*.yml</include>
-				</includes>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.12.0</version>
-				<configuration>
-					<source>11</source>
-					<target>11</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	<repositories>
-		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-		</repository>
-		<repository>
-			<id>sonatype</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-		</repository>
-	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>1.13.1-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.promcteam</groupId>
-			<artifactId>bossshoppro</artifactId>
-			<version>2.1.0-R0.2-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>studio.magemonkey</groupId>
+        <artifactId>genesis-parent</artifactId>
+        <version>1.20.4-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>genesis-limiteduses</artifactId>
+    <version>1.0.0-R0.1-SNAPSHOT</version>
+    <name>Genesis-LimitedUses</name>
+    <description>Allows to limit the amount of uses of shop items.</description>
+
+    <repositories>
+        <repository>
+            <id>sonatype</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
 </project>
