@@ -1,21 +1,19 @@
 package studio.magemonkey.genesis.addon.limiteduses;
 
-import org.black_ixx.bossshop.core.BSBuy;
-import org.black_ixx.bossshop.core.BSShopHolder;
-import org.black_ixx.bossshop.core.conditions.BSConditionTypeNumber;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import studio.magemonkey.genesis.core.GenesisBuy;
+import studio.magemonkey.genesis.core.GenesisShopHolder;
+import studio.magemonkey.genesis.core.conditions.GenesisConditionTypeNumber;
 
-public class GenesisConditionTypeUses extends BSConditionTypeNumber {
+@RequiredArgsConstructor
+public class GenesisConditionTypeUses extends GenesisConditionTypeNumber {
 
     private final LimitedUsesManager manager;
 
-    public GenesisConditionTypeUses(LimitedUsesManager manager) {
-        this.manager = manager;
-    }
-
     @Override
-    public double getNumber(BSBuy shopitem, BSShopHolder holder, Player p) {
-        return manager.detectUsedAmount(p, shopitem.getShop(), shopitem);
+    public double getNumber(GenesisBuy shopItem, GenesisShopHolder holder, Player p) {
+        return manager.detectUsedAmount(p, shopItem.getShop(), shopItem);
     }
 
     @Override
@@ -32,6 +30,4 @@ public class GenesisConditionTypeUses extends BSConditionTypeNumber {
     @Override
     public void enableType() {
     }
-
-
 }

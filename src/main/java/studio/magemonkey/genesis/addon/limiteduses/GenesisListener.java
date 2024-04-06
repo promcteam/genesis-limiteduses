@@ -1,18 +1,6 @@
 package studio.magemonkey.genesis.addon.limiteduses;
 
-
-import org.black_ixx.bossshop.core.BSBuy;
-import org.black_ixx.bossshop.core.conditions.BSCondition;
-import org.black_ixx.bossshop.core.conditions.BSConditionSet;
-import org.black_ixx.bossshop.core.conditions.BSConditionType;
-import org.black_ixx.bossshop.core.conditions.BSSingleCondition;
-import org.black_ixx.bossshop.events.BSCheckStringForFeaturesEvent;
-import org.black_ixx.bossshop.events.BSPlayerPurchasedEvent;
-import org.black_ixx.bossshop.events.BSRegisterTypesEvent;
-import org.black_ixx.bossshop.events.BSTransformStringEvent;
-import org.black_ixx.bossshop.managers.misc.InputReader;
-import org.black_ixx.bossshop.managers.misc.StringManipulationLib;
-import org.black_ixx.bossshop.misc.TimeTools;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,16 +8,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import studio.magemonkey.genesis.core.GenesisBuy;
+import studio.magemonkey.genesis.core.conditions.GenesisCondition;
+import studio.magemonkey.genesis.core.conditions.GenesisConditionSet;
+import studio.magemonkey.genesis.core.conditions.GenesisConditionType;
+import studio.magemonkey.genesis.core.conditions.GenesisSingleCondition;
+import studio.magemonkey.genesis.events.GenesisCheckStringForFeaturesEvent;
+import studio.magemonkey.genesis.events.GenesisPlayerPurchasedEvent;
+import studio.magemonkey.genesis.events.GenesisRegisterTypesEvent;
+import studio.magemonkey.genesis.events.GenesisTransformStringEvent;
+import studio.magemonkey.genesis.managers.misc.InputReader;
+import studio.magemonkey.genesis.managers.misc.StringManipulationLib;
+import studio.magemonkey.genesis.misc.TimeTools;
 
+@RequiredArgsConstructor
 public class GenesisListener implements Listener {
-
-    private final LimitedUses plugin;
+    private final LimitedUses        plugin;
     private final LimitedUsesManager manager;
-
-    public GenesisListener(LimitedUses plugin, LimitedUsesManager manager) {
-        this.plugin = plugin;
-        this.manager = manager;
-    }
 
     public void enable() {
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -47,13 +42,13 @@ public class GenesisListener implements Listener {
 
 
     @EventHandler
-    public void onRegisterTypes(BSRegisterTypesEvent e) {
+    public void onRegisterTypes(GenesisRegisterTypesEvent e) {
         new GenesisConditionTypeUses(manager).register();
         new GenesisConditionTypeCooldown(manager).register();
     }
 
     @EventHandler
-    public void onItemPurchased(BSPlayerPurchasedEvent e) {
+    public void onItemPurchased(GenesisPlayerPurchasedEvent e) {
         boolean b = false;
         if (hasConditionUses(e.getShopItem())) {
             manager.progressUse(e.getPlayer(), e.getShop(), e.getShopItem());
@@ -66,12 +61,12 @@ public class GenesisListener implements Listener {
         }
 
         if (b) {
-            plugin.getBossShop().getAPI().updateInventory(e.getPlayer());
+            plugin.getGenesis().getAPI().updateInventory(e.getPlayer());
         }
     }
 
     @EventHandler
-    public void transformString(BSTransformStringEvent event) {
+    public void transformString(GenesisTransformStringEvent event) {
         Player p = event.getTarget();
         if (p != null && event.getShop() != null && event.getShopItem() != null) {
 
@@ -83,24 +78,26 @@ public class GenesisListener implements Listener {
             }
             if (text.contains("%uses_")) {
                 String variable = StringManipulationLib.figureOutVariable(text, "uses", 0);
-                long uses = manager.detectUsedAmount(p, variable);
+                long   uses     = manager.detectUsedAmount(p, variable);
                 text = text.replace("%uses_" + variable + "%", String.valueOf(uses));
             }
 
             if (text.contains("%cooldown_")) {
-                String variable = StringManipulationLib.figureOutVariable(text, "cooldown", 0);
-                BSBuy buy = manager.getShopItem(variable);
+                String     variable = StringManipulationLib.figureOutVariable(text, "cooldown", 0);
+                GenesisBuy buy      = manager.getShopItem(variable);
                 if (buy != null) {
-                    long time = manager.detectLastUseDelay(p, buy.getShop(), buy);
-                    long time_to_wait = 0;
-                    BSSingleCondition c = getCondition(buy.getCondition(), "cooldown");
+                    long                   time         = manager.detectLastUseDelay(p, buy.getShop(), buy);
+                    long                   time_to_wait = 0;
+                    GenesisSingleCondition c            = getCondition(buy.getCondition(), "cooldown");
                     if (c != null) {
-                        if (c.getConditionType().equalsIgnoreCase(">") || c.getConditionType().equalsIgnoreCase("over")) {
+                        if (c.getConditionType().equalsIgnoreCase(">") || c.getConditionType()
+                                .equalsIgnoreCase("over")) {
                             time_to_wait = InputReader.getInt(c.getCondition(), 0) * 1000L;
                         }
                     }
                     long time_left = time_to_wait - time;
-                    text = text.replace("%cooldown_" + variable + "%", TimeTools.transform(Math.max(0, time_left / 1000)));
+                    text = text.replace("%cooldown_" + variable + "%",
+                            TimeTools.transform(Math.max(0, time_left / 1000)));
                 }
             }
 
@@ -109,7 +106,7 @@ public class GenesisListener implements Listener {
     }
 
     @EventHandler
-    public void checkString(BSCheckStringForFeaturesEvent event) {
+    public void checkString(GenesisCheckStringForFeaturesEvent event) {
         String s = event.getText();
         if (s.contains("%uses%") || s.contains("%uses_") || s.contains("%cooldown_")) {
             event.approveFeature();
@@ -136,30 +133,30 @@ public class GenesisListener implements Listener {
     }
 
 
-    public boolean hasConditionUses(BSBuy buy) {
-        BSCondition condition = buy.getCondition();
+    public boolean hasConditionUses(GenesisBuy buy) {
+        GenesisCondition condition = buy.getCondition();
         return getCondition(condition, "uses") != null;
     }
 
-    public boolean hasConditionCooldown(BSBuy buy) {
-        BSCondition condition = buy.getCondition();
+    public boolean hasConditionCooldown(GenesisBuy buy) {
+        GenesisCondition condition = buy.getCondition();
         return getCondition(condition, "cooldown") != null;
     }
 
-    private BSSingleCondition getCondition(BSCondition condition, String conditiontype) {
+    private GenesisSingleCondition getCondition(GenesisCondition condition, String conditiontype) {
         if (condition != null) {
-            if (condition instanceof BSConditionSet) {
-                BSConditionSet set = (BSConditionSet) condition;
-                for (BSCondition c : set.getConditions()) {
-                    BSSingleCondition subcondition = getCondition(c, conditiontype);
+            if (condition instanceof GenesisConditionSet) {
+                GenesisConditionSet set = (GenesisConditionSet) condition;
+                for (GenesisCondition c : set.getConditions()) {
+                    GenesisSingleCondition subcondition = getCondition(c, conditiontype);
                     if (subcondition != null) {
                         return subcondition;
                     }
                 }
             } else {
-                if (condition instanceof BSSingleCondition) {
-                    BSSingleCondition c = (BSSingleCondition) condition;
-                    if (c.getType() == BSConditionType.detectType(conditiontype)) {
+                if (condition instanceof GenesisSingleCondition) {
+                    GenesisSingleCondition c = (GenesisSingleCondition) condition;
+                    if (c.getType() == GenesisConditionType.detectType(conditiontype)) {
                         return c;
                     }
                 }
