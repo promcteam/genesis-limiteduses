@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>genesis-limiteduses</artifactId>
-    <version>1.0.0-R0.2-SNAPSHOT</version>
+    <version>1.0.0-R0.3-SNAPSHOT</version>
     <name>Genesis-LimitedUses</name>
     <description>Allows to limit the amount of uses of shop items.</description>
 
