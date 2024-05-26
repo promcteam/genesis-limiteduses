@@ -7,8 +7,8 @@ v1.0.5
 *[ADD] Added command to reset cooldown and uses of a certain shopitem for a specified player
 
 
-v1.0.4 (Needs BossShopPro v1.7.0 or higher)
-*[UPDATE] Updated to BossShopPro v1.7.0
+v1.0.4 (Needs Genesis v1.7.0 or higher)
+*[UPDATE] Updated to Genesis v1.7.0
 
 
 v1.0.3
@@ -20,7 +20,7 @@ v1.0.2
 *[FIX] Fixed error that sometimes appeared when the server was shut down
 
 
-v1.0.1 (Needs BossShopPro v1.2.0 or higher):
+v1.0.1 (Needs Genesis v1.2.0 or higher):
 *[ADD] Added new time condition: cooldown/delay
 *[ADD] Updated placeholders (IMPORTANT: They are case-sensitive)
 ** '%uses%' will display the amount of uses of the shopitem
