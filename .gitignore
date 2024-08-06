@@ -7,3 +7,6 @@
 dependency-reduced-pom.xml
 .floo*
 gh-pages/
+log.txt
+settings.xml
+toolchains.xml
