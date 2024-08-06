@@ -1,15 +1,12 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package studio.magemonkey.genesis.addon.limiteduses;
 
-
-import org.black_ixx.bossshop.api.BossShopAddon;
 import org.bukkit.command.CommandSender;
+import studio.magemonkey.genesis.api.GenesisAddon;
 
-public class LimitedUses extends BossShopAddon {
+public class LimitedUses extends GenesisAddon {
 
-
-    private BSListener listener;
+    private GenesisListener    listener;
     private LimitedUsesManager manager;
-
 
     @Override
     public String getAddonName() {
@@ -17,20 +14,20 @@ public class LimitedUses extends BossShopAddon {
     }
 
     @Override
-    public String getRequiredBossShopVersion() {
-        return "1.7.0";
+    public String getRequiredGenesisVersion() {
+        return "1.0.0";
     }
 
     @Override
     public void enableAddon() {
         getCommand("limiteduses").setExecutor(new CommandManager(this));
         manager = new LimitedUsesManager(this);
-        listener = new BSListener(this, manager);
+        listener = new GenesisListener(this, manager);
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
     @Override
-    public void bossShopFinishedLoading() {
+    public void genesisFinishedLoading() {
         listener.enable();
     }
 
@@ -41,7 +38,7 @@ public class LimitedUses extends BossShopAddon {
     }
 
     @Override
-    public void bossShopReloaded(CommandSender sender) {
+    public void genesisReloaded(CommandSender sender) {
         listener.disable(); //includes saving
         listener.enable();
     }

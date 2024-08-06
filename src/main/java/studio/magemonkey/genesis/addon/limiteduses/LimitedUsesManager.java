@@ -1,37 +1,31 @@
-package org.black_ixx.bossshop.addon.limiteduses;
+package studio.magemonkey.genesis.addon.limiteduses;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
-import org.black_ixx.bossshop.BossShop;
-import org.black_ixx.bossshop.api.BSAddonStorage;
-import org.black_ixx.bossshop.core.BSBuy;
-import org.black_ixx.bossshop.core.BSShop;
-import org.black_ixx.bossshop.managers.ClassManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import studio.magemonkey.genesis.Genesis;
+import studio.magemonkey.genesis.api.GenesisAddonStorage;
+import studio.magemonkey.genesis.core.GenesisBuy;
+import studio.magemonkey.genesis.core.GenesisShop;
+import studio.magemonkey.genesis.managers.ClassManager;
+
+import java.util.*;
 
 public class LimitedUsesManager {
-
-    private LimitedUses plugin;
-    private BSAddonStorage storage;
-    private HashMap<UUID, List<String>> uses = new HashMap<UUID, List<String>>(); //includes cooldowns
-    private HashMap<UUID, List<String>> cooldowns = new HashMap<UUID, List<String>>();
-
+    private final LimitedUses                 plugin;
+    private final GenesisAddonStorage         storage;
+    private final HashMap<UUID, List<String>> uses      = new HashMap<>(); //includes cooldowns
+    private final HashMap<UUID, List<String>> cooldowns = new HashMap<>();
 
     public LimitedUsesManager(LimitedUses plugin) {
         this.plugin = plugin;
         storage = plugin.createStorage(plugin, "used");
         if (storage.containsPath("players")) {
-            BossShop.log("[LimitedUses] Seems like you are using an old storage type. Quickly converting your file!");
+            Genesis.log("[LimitedUses] Seems like you are using an old storage type. Quickly converting your file!");
             for (String key : storage.listKeys("players", true)) { //Convert storage
                 List<String> uses_list = storage.getStringList("players." + key);
                 if (uses_list != null) {
-                    List<String> new_uses_list = new ArrayList<String>();
+                    List<String> new_uses_list = new ArrayList<>();
                     for (String entry : uses_list) {
                         new_uses_list.add(entry.replace("-", ":"));
                     }
@@ -41,7 +35,7 @@ public class LimitedUsesManager {
             }
             storage.deleteAll("players");
             storage.save();
-            BossShop.log("[LimitedUses] Finished converting!");
+            Genesis.log("[LimitedUses] Finished converting!");
         }
     }
 
@@ -55,7 +49,8 @@ public class LimitedUsesManager {
         for (Player p : Bukkit.getOnlinePlayers()) {
             savePlayer(p, false);
         }
-        BSAddonStorage backup = plugin.createStorage(plugin, "used_backup_" + new Date().toString().replaceAll(":", "_"));
+        GenesisAddonStorage backup =
+                plugin.createStorage(plugin, "used_backup_" + new Date().toString().replaceAll(":", "_"));
         backup.pasteContentFrom(storage);
         backup.save();
         uses.clear();
@@ -83,14 +78,16 @@ public class LimitedUsesManager {
         }
     }
 
-    public void resetShopItem(OfflinePlayer p, BSShop shop, BSBuy buy) {
+    public void resetShopItem(OfflinePlayer p, GenesisShop shop, GenesisBuy buy) {
         resetValue(p, shop, buy, cooldowns);
         resetValue(p, shop, buy, uses);
     }
 
 
     public void loadPlayer(OfflinePlayer player) {
-        loadPlayer(player, storage.getStringList("uses." + player.getUniqueId()), storage.getStringList("cooldowns." + player.getUniqueId()));
+        loadPlayer(player,
+                storage.getStringList("uses." + player.getUniqueId()),
+                storage.getStringList("cooldowns." + player.getUniqueId()));
     }
 
     private void loadPlayer(OfflinePlayer player, List<String> uses, List<String> cooldowns) {
@@ -138,7 +135,7 @@ public class LimitedUsesManager {
         return detectValue(p, tag, uses, 0);
     }
 
-    public long detectUsedAmount(OfflinePlayer p, BSShop shop, BSBuy buy) { //in Uses
+    public long detectUsedAmount(OfflinePlayer p, GenesisShop shop, GenesisBuy buy) { //in Uses
         return detectValue(p, shop, buy, uses, 0);
     }
 
@@ -147,7 +144,7 @@ public class LimitedUsesManager {
         return System.currentTimeMillis() - value;
     }
 
-    public long detectLastUseDelay(OfflinePlayer p, BSShop shop, BSBuy buy) { //in MS
+    public long detectLastUseDelay(OfflinePlayer p, GenesisShop shop, GenesisBuy buy) { //in MS
         long value = detectLastUseTime(p, shop, buy);
         return System.currentTimeMillis() - value;
     }
@@ -156,11 +153,15 @@ public class LimitedUsesManager {
         return detectValue(p, tag, cooldowns, -1);
     }
 
-    public long detectLastUseTime(OfflinePlayer p, BSShop shop, BSBuy buy) { //in MS
+    public long detectLastUseTime(OfflinePlayer p, GenesisShop shop, GenesisBuy buy) { //in MS
         return detectValue(p, shop, buy, cooldowns, -1);
     }
 
-    public long detectValue(OfflinePlayer p, BSShop shop, BSBuy buy, HashMap<UUID, List<String>> map, long def) {
+    public long detectValue(OfflinePlayer p,
+                            GenesisShop shop,
+                            GenesisBuy buy,
+                            HashMap<UUID, List<String>> map,
+                            long def) {
         return detectValue(p, createTag(shop, buy), map, def);
     }
 
@@ -182,9 +183,9 @@ public class LimitedUsesManager {
         return def;
     }
 
-    public boolean resetValue(OfflinePlayer p, BSShop shop, BSBuy buy, HashMap<UUID, List<String>> map) {
+    public boolean resetValue(OfflinePlayer p, GenesisShop shop, GenesisBuy buy, HashMap<UUID, List<String>> map) {
         if (map.containsKey(p.getUniqueId())) {
-            String tag = createTag(shop, buy);
+            String       tag  = createTag(shop, buy);
             List<String> used = map.get(p.getUniqueId());
 
             for (String entry : used) {
@@ -198,29 +199,33 @@ public class LimitedUsesManager {
         return false;
     }
 
-    public void progressUse(OfflinePlayer p, BSShop shop, BSBuy buy) {
+    public void progressUse(OfflinePlayer p, GenesisShop shop, GenesisBuy buy) {
         long value = detectUsedAmount(p, shop, buy);
         progressValue(p, shop, buy, uses, value + 1);
     }
 
-    public void progressCooldown(OfflinePlayer p, BSShop shop, BSBuy buy) {
+    public void progressCooldown(OfflinePlayer p, GenesisShop shop, GenesisBuy buy) {
         progressValue(p, shop, buy, cooldowns, System.currentTimeMillis());
     }
 
-    public void setUses(OfflinePlayer p, BSShop shop, BSBuy buy, long value) {
+    public void setUses(OfflinePlayer p, GenesisShop shop, GenesisBuy buy, long value) {
         progressValue(p, shop, buy, uses, value);
     }
 
 
-    public void progressValue(OfflinePlayer p, BSShop shop, BSBuy buy, HashMap<UUID, List<String>> map, long value) {
+    public void progressValue(OfflinePlayer p,
+                              GenesisShop shop,
+                              GenesisBuy buy,
+                              HashMap<UUID, List<String>> map,
+                              long value) {
         if (!map.containsKey(p.getUniqueId())) {
-            map.put(p.getUniqueId(), new ArrayList<String>());
+            map.put(p.getUniqueId(), new ArrayList<>());
         }
 
-        String tag = createTag(shop, buy);
-        List<String> list = map.get(p.getUniqueId());
-        String to_remove = null;
-        String to_add = tag + ":" + value;
+        String       tag       = createTag(shop, buy);
+        List<String> list      = map.get(p.getUniqueId());
+        String       to_remove = null;
+        String       to_add    = tag + ":" + value;
         for (String entry : list) {
             if (entry.startsWith(tag)) {
                 to_remove = entry;
@@ -233,16 +238,16 @@ public class LimitedUsesManager {
         list.add(to_add);
     }
 
-    private String createTag(BSShop shop, BSBuy item) {
+    private String createTag(GenesisShop shop, GenesisBuy item) {
         return shop.getShopName() + ":" + item.getName();
     }
 
-    public BSBuy getShopItem(String tag) {
+    public GenesisBuy getShopItem(String tag) {
         if (tag != null) {
             String[] parts = tag.split(":", 2);
             if (parts.length == 2) {
                 if (ClassManager.manager.getShops() != null) {
-                    BSShop shop = ClassManager.manager.getShops().getShop(parts[0].trim().toLowerCase());
+                    GenesisShop shop = ClassManager.manager.getShops().getShop(parts[0].trim().toLowerCase());
                     if (shop != null) {
                         return shop.getItem(parts[1].trim());
                     }

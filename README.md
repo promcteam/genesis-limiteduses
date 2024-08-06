@@ -1,4 +1,4 @@
-BSP-LimitedUses
+Genesis-LimitedUses
 ============
 
-This BossShopPro Addon allows to limit the amount of uses of items by adding a new type of condition.
+This Genesis Addon allows to limit the amount of uses of items by adding a new type of condition.
