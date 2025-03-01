@@ -4,7 +4,7 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>genesis-parent</artifactId>
-        <version>1.21.4-R0.3</version>
+        <version>1.21.4-R0.4</version>
     </parent>
 
     <artifactId>genesis-limiteduses</artifactId>
