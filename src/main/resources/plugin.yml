@@ -1,8 +1,8 @@
 name: LimitedUses
 version: ${project.version}
 description: Genesis Addon - Allows to limit the amount of uses of items.
-author: Black_ixx,MageMonkeyStudio
-website: http://felix.neuby.de
+authors: [MageMonkeyStudio, Black_ixx]
+website: https://magemonkey.studio
 main: studio.magemonkey.genesis.addon.limiteduses.LimitedUses
 depend: [Genesis]
 commands:
